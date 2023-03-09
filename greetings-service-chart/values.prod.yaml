@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: ufoalan/greetings-service
+  repository: <repo_url>/greetings-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.3.0"
+  tag: "0.5.0"
 
 imagePullSecrets: []
 nameOverride: ""
