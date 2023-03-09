@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-configmap
+  namespace: {{ .Values.release.project_name }}-{{ .Values.release.platform }}
+data:
+  target: {{ .Values.release.platform }}
+  java_home: {{ .Values.release.java_home }}
