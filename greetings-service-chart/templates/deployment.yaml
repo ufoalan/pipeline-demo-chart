@@ -33,7 +33,7 @@ spec:
           name: {{ .Chart.Name }}-configmap
           items:
             - key: application.properties
-            - path: application.properties
+              path: application.properties
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
