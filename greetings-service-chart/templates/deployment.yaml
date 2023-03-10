@@ -27,12 +27,20 @@ spec:
       serviceAccountName: {{ include "greetings-service-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Chart.Name }}-app-configmap
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /deployments/application.properties
+              subPath: application.properties
           env:
             - name: TARGET_PLATFORM
               valueFrom:
@@ -49,14 +57,20 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
-            initialDelaySeconds: 5
-            periodSeconds: 2
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
             httpGet:
               path: /actuator/health
               port: http
           readinessProbe:
-            initialDelaySeconds: 5
-            periodSeconds: 2
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
             httpGet:
               path: /actuator/health
               port: http

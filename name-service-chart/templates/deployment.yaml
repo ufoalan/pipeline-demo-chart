@@ -49,14 +49,20 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
-            initialDelaySeconds: 5
-            periodSeconds: 2
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
             httpGet:
               path: /camel/name
               port: http
           readinessProbe:
-            initialDelaySeconds: 5
-            periodSeconds: 2
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
             httpGet:
               path: /camel/name
               port: http
