@@ -30,7 +30,9 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: {{ .Chart.Name }}-app-configmap
+          name: {{ .Chart.Name }}-configmap
+          items:
+            - key: application.properties
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
