@@ -6,6 +6,8 @@ metadata:
 data:
   target: {{ .Values.release.platform }}
   java_home: {{ .Values.release.java_home }}
+  name_service_host: {{ .Values.release.name_service_host }}
+  name_service_port: {{ .Values.release.name_service_port }}
   application.properties: |-
     server.port=8080
 

@@ -80,6 +80,8 @@ release:
   project_name: pipeline-demo
   platform: prod
   java_home: /usr/local/java
+  name_service_host: name-service-chart
+  name_service_port: 8080
   
 
 nodeSelector: {}

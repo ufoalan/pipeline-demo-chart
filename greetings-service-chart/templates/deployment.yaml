@@ -55,6 +55,16 @@ spec:
                 configMapKeyRef:
                   name: {{ .Chart.Name }}-configmap
                   key: java_home
+            - name: NAME_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-configmap
+                  key: name-service-host
+            - name: NAME_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-configmap
+                  key: name-service-port
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
