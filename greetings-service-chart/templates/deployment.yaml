@@ -59,12 +59,12 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Chart.Name }}-configmap
-                  key: name-service-host
+                  key: name_service_host
             - name: NAME_SERVICE_PORT
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Chart.Name }}-configmap
-                  key: name-service-port
+                  key: name_service_port
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
