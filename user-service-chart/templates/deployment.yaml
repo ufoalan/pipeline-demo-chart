@@ -59,16 +59,16 @@ spec:
 #                configMapKeyRef:
 #                  name: {{ .Chart.Name }}-configmap
 #                  key: db_port
-#            - name: DB_USER
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: {{ .Chart.Name }}-configmap
-#                  key: db_user
-#            - name: DB_PASSWD
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: {{ .Chart.Name }}-configmap
-#                  key: db_passwd
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: db_user
+            - name: DB_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: db_passwd
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -80,7 +80,6 @@ spec:
             successThreshold: 1
             failureThreshold: 3
             httpGet:
-#              path: /actuator/health
               path: /demo/all
               port: http
           readinessProbe:
@@ -90,7 +89,6 @@ spec:
             successThreshold: 1
             failureThreshold: 3
             httpGet:
-#              path: /actuator/health
               path: /demo/all
               port: http
           resources:

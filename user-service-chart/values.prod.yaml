@@ -82,8 +82,8 @@ release:
   java_home: /usr/local/java
   db_host: mysql
   db_port: 3306
-  db_user: springuser
-  db_passwd: ThePassword
+  db_user: c3ByaW5ndXNlcg==
+  db_passwd: VGhlUGFzc3dvcmQ=
   
 
 nodeSelector: {}
