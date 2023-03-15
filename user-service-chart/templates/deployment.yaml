@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "user-service-chart.fullname" . }}
+  labels:
+    {{- include "user-service-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "user-service-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "user-service-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "user-service-chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-configmap
+                  key: db_host
+#            - name: TARGET_PLATFORM
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: target
+#            - name: JAVA_HOME
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: java_home
+#            - name: DB_HOST
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: db_host
+#            - name: DB_PORT
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: db_port
+#            - name: DB_USER
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: db_user
+#            - name: DB_PASSWD
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: {{ .Chart.Name }}-configmap
+#                  key: db_passwd
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            httpGet:
+#              path: /actuator/health
+              path: /demo/all
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            httpGet:
+#              path: /actuator/health
+              path: /demo/all
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
