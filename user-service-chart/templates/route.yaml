@@ -3,7 +3,6 @@ kind: Route
 metadata:
   name: {{ .Chart.Name }}
 spec:
-  host: www.example.com                            
   to:
     kind: Service
     name: {{ .Chart.Name }}
