@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "tls-server.fullname" . }}
+  name: {{ include "tls-server-chart.fullname" . }}
   labels:
-    {{- include "tls-server.labels" . | nindent 4 }}
+    {{- include "tls-server-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "tls-server.selectorLabels" . | nindent 6 }}
+      {{- include "tls-server-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "tls-server.selectorLabels" . | nindent 8 }}
+        {{- include "tls-server-chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "tls-server.serviceAccountName" . }}
+      serviceAccountName: {{ include "tls-server-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

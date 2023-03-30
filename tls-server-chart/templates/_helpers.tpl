@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "tls-server.name" -}}
+{{- define "tls-server-chart.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "tls-server.fullname" -}}
+{{- define "tls-server-chart.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "tls-server.chart" -}}
+{{- define "tls-server-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "tls-server.labels" -}}
-helm.sh/chart: {{ include "tls-server.chart" . }}
-{{ include "tls-server.selectorLabels" . }}
+{{- define "tls-server-chart.labels" -}}
+helm.sh/chart: {{ include "tls-server-chart.chart" . }}
+{{ include "tls-server-chart.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "tls-server.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "tls-server.name" . }}
+{{- define "tls-server-chart.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "tls-server-chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "tls-server.serviceAccountName" -}}
+{{- define "tls-server-chart.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "tls-server.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "tls-server-chart.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
