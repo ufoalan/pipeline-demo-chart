@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-configmap
+  namespace: {{ .Values.release.project_name }}-{{ .Values.release.platform }}
+data:
+  https_server_host: {{ .Values.release.https_server_host }}
+  https_server_port: "{{ .Values.release.https_server_port }}"
