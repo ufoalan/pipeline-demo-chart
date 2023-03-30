@@ -1,0 +1,17 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: ca.crt
+  namespace: {{ .Values.release.project_name }}-{{ .Values.release.platform }}
+spec:
+  encryptedData:
+    tls.crt: {{ .Values.release.ca.tlscrt }}
+    tls.key: {{ .Values.release.ca.tlskey }}
+  template:
+    metadata:
+      creationTimestamp: null
+      name: ca.crt
+      namespace: {{ .Values.release.project_name }}-{{ .Values.release.platform }}
+    type: kubernetes.io/tls
+

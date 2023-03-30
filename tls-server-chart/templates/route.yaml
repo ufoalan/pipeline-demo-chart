@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Chart.Name }}-route
+spec:
+  to:
+    kind: Service
+    name: {{ .Chart.Name }}
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: Redirect
+  port:
+    targetPort: 8080
