@@ -1,0 +1,88 @@
+# Default values for ts-client-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: <repo_url>/ts-client
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.5.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+release:
+  service_name: ts-client
+  project_name: pipeline-demo
+  platform: prod
+  truststore: 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
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
